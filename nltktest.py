@@ -28,7 +28,6 @@ nltk.download('nps_chat') # chat corpus contains 10k posts from IM sessions
 
 posts = nltk.corpus.nps_chat.xml_posts()[:10000] #xml annotations for first 10000 IM posts
 
-
 def dialogue_act_features(post): #define a method
     features = {}
     for word in nltk.word_tokenize(post):
@@ -44,12 +43,13 @@ featuresets = [(dialogue_act_features(post.text), post.get('class')) for post in
 #     print(post.get('class'))
 size = int(len(featuresets) * 0.1)
 train_set, test_set = featuresets[size:], featuresets[:size] #train classifier on the first tenth of data
-classifier = nltk.NaiveBayesClassifier.train(train_set)
+classifier = nltk.NaiveBayesClassifier.train(featuresets)
 # print(test_set[0])
 # print(nltk.classify.accuracy(classifier, test_set)) #calculates accuracy of classifier model on given test set
 
-mytestset = [({'contains(who)': True, 'contains(are)': True, 'contains(you)': True,
-               'contains(to)': True, 'contains(be)': True, 'contains(this)': True, 'contains(bad)': True}, 'Question')]
+mytestset = [({'contains(did)': True, 'contains(you)': True, 'contains(eat)': True,
+               'contains(yet)': True}, 'Question')]
 # print(nltk.classify.accuracy(classifier, mytestset))
-print(classifier.classify({'contains(who)': True, 'contains(are)': True, 'contains(you)': True,
-                     'contains(to)': True, 'contains(be)': True, 'contains(this)': True, 'contains(bad)': True}))
+# classifier.show_most_informative_features()
+print(classifier.classify({'contains(did)': True, 'contains(you)': True, 'contains(eat)': True,
+                           'contains(yet)': True}))
