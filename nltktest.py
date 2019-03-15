@@ -43,7 +43,7 @@ featuresets = [(dialogue_act_features(post.text), post.get('class')) for post in
 #     print(post.get('class'))
 size = int(len(featuresets) * 0.1)
 train_set, test_set = featuresets[size:], featuresets[:size] #train classifier on the first tenth of data
-classifier = nltk.NaiveBayesClassifier.train(featuresets)
+# classifier = nltk.NaiveBayesClassifier.train(featuresets)
 # print(test_set[0])
 # print(nltk.classify.accuracy(classifier, test_set)) #calculates accuracy of classifier model on given test set
 
@@ -51,5 +51,10 @@ mytestset = [({'contains(did)': True, 'contains(you)': True, 'contains(eat)': Tr
                'contains(yet)': True}, 'Question')]
 # print(nltk.classify.accuracy(classifier, mytestset))
 # classifier.show_most_informative_features()
-print(classifier.classify({'contains(did)': True, 'contains(you)': True, 'contains(eat)': True,
-                           'contains(yet)': True}))
+# print(classifier.classify({'contains(did)': True, 'contains(you)': True, 'contains(eat)': True,
+                        #    'contains(yet)': True}))
+
+#maxent classifier
+maxent_classifier = nltk.MaxentClassifier.train(train_set, max_iter=6)
+print(maxent_classifier.classify(test_set[0][0]))
+print(nltk.classify.accuracy(maxent_classifier, test_set))
