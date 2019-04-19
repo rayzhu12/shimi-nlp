@@ -20,7 +20,7 @@ def dialogue_act_features(post): #define a method
 #    YNQuestion, WHQuestion, Greet, Clarify, Other
 featuresets = [(dialogue_act_features(post.text), post.get('class')) for post in posts]
 
-size = int(len(featuresets) * 0.1)
+size = int(len(featuresets) * 0.9)
 train_set, test_set = featuresets[size:], featuresets[:size] #train classifier on the first tenth of data
 # classifier = nltk.NaiveBayesClassifier.train(featuresets)
 # print(test_set[0])
@@ -29,7 +29,8 @@ train_set, test_set = featuresets[size:], featuresets[:size] #train classifier o
 # mytestset = [({'contains(did)': True, 'contains(you)': True, 'contains(eat)': True,
             #    'contains(yet)': True}, 'Question')]
 
-mytestset = dialogue_act_features("ew that's gross")
+txt = input("Type a sentence for me to classify: ")
+mytestset = dialogue_act_features(txt)
 
 # print(nltk.classify.accuracy(classifier, mytestset))
 # classifier.show_most_informative_features()
@@ -37,8 +38,8 @@ mytestset = dialogue_act_features("ew that's gross")
                         #    'contains(yet)': True}))
 
 #maxent classifier
-maxent_classifier = nltk.MaxentClassifier.train(train_set, max_iter=6)
+maxent_classifier = nltk.MaxentClassifier.train(train_set, max_iter=4)
 # print(maxent_classifier.classify(test_set[0][0]))
 print(maxent_classifier.classify(mytestset))
-maxent_classifier.show_most_informative_features()
+# maxent_classifier.show_most_informative_features()
 # print(nltk.classify.accuracy(maxent_classifier, test_set))
